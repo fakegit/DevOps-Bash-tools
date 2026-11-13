@@ -5,13 +5,13 @@
 #  Author: Hari Sekhon
 #  Date: circa 2006 - 2012 (forked from .bashrc)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -227,6 +227,7 @@ cleankey(){
 
 keyremove(){
     for x in "$@"; do
+        # shellcheck disable=SC1117
         ssh -o "PasswordAuthentication no" "$x" '
             for y in ~/.ssh/authorized_keys*; do
                 if [ -f "$y" ]; then

@@ -6,13 +6,13 @@
 #  Date: 2006-06-28 23:25:09 +0100 (Wed, 28 Jun 2006)
 #  (forked from .bashrc)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -71,6 +71,8 @@ autoload U colors && colors
 
 # expand wilcard expansion on unquoted variables like Bash
 setopt GLOB_SUBST
+
+export PATH="$PATH:/opt/homebrew/bin/"
 
 # ============================================================================ #
 #                                   Oh-My-ZSH
@@ -188,3 +190,34 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # ============================================================================ #
+
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt appendhistory autocd extendedglob nomatch notify
+unsetopt beep
+bindkey -e
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/hari/.zshrc'
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# added by travis gem - Travis is legacy now, don't bother with this
+#[ -f /Users/hari/.travis/travis.sh ] && source /Users/hari/.travis/travis.sh
+
+if type -P direnv &>/dev/null; then
+    eval "$(direnv hook zsh)"
+fi
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /Users/hari/bin/terraform terraform
+complete -o nospace -C /Users/hari/bin/terraform tf
+
+complete -o nospace -C /usr/local/bin/terragrunt terragrunt
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/hari/.sdkman"
+[[ -s "/Users/hari/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/hari/.sdkman/bin/sdkman-init.sh"

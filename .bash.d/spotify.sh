@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: 2020-07-18 19:43:00 +0100 (Sat, 18 Jul 2020)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # exports SPOTIFY_ACCESS_TOKEN so all the user private data spotify tools (../spotify_*.sh) can use it easily without re-prompting ia browser
@@ -24,7 +24,7 @@ spotifysession(){
     spotify_token_expire_timer &
     # defined in ../.bashrc
     # shellcheck disable=SC2154
-    SPOTIFY_ACCESS_TOKEN="$(SPOTIFY_PRIVATE=1 "$bash_tools/spotify_api_token.sh")"
+    SPOTIFY_ACCESS_TOKEN="$(SPOTIFY_PRIVATE=1 "$bash_tools/spotify/spotify_api_token.sh")"
     export SPOTIFY_ACCESS_TOKEN
     timestamp "starting spotify session shell"
     "$SHELL"

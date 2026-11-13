@@ -3,11 +3,11 @@
 #  Author: Hari Sekhon
 #  Date: 2019-11-26 15:19:31 +0000 (Tue, 26 Nov 2019)
 #
-#  https://github.com/harisekhon/devops-bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying LICENSE file
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # Reinstalls Python via HomeBrew to fix OpenSSL library linkage break upon OpenSSL 1.0 => OpenSSL 1.1 upgrade caused by krb5
@@ -27,6 +27,8 @@ if [ "$(uname -s)" != Darwin ]; then
 fi
 
 if type -P brew &>/dev/null; then
+    # doesn't work - xcode-select can't detect it, let it install itself to fix
+    #if ! which python ; then sudo mkdir -pv /usr/local/bin ; sudo ln -sfv /usr/bin/python3 /usr/local/bin/python; fi
     # grep -q causes a pipefail via early pipe close which exits the script early without fixing
     if python -c 'import hashlib' 2>&1 | tee /dev/stderr | grep 'unsupported hash type'; then
         echo "Attempting to upgrade homebrew packages depending on upgraded OpenSSL linkage break"

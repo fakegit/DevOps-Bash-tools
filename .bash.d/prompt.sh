@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: circa 2006 - 2012 (forked from .bashrc)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -26,6 +26,7 @@
 # replace \033 with \e as it's directly supported in PS1
 
 # need 'Defaults env_keep=STY' for this to not trigger on sudo su
+# shellcheck disable=SC1117
 SCREEN_ESCAPE="\[\ek\e\\\\\]"
 
 PS1=""
@@ -51,7 +52,8 @@ fi
 #   \h      host
 # shellcheck disable=SC2154
 # export PS1+="\[$PS1_COLOUR\]\t \[$bldblu\]\w \[$PS1_COLOUR\]> \[$txtrst\]"
-export PS1+="\[$PS1_COLOUR\]\t \[$PS1_USER_COLOUR\]\u\[$txtwht\]@\[$bldgrn\]\h:\[$bldpur\]\$(git branch 2>/dev/null | awk '/^\\*/{print \$2\" \"}')\[$bldblu\]\w \[$PS1_COLOUR\]> \[$txtrst\]"
+# shellcheck disable=SC1117
+export PS1+="\[$PS1_COLOUR\]\t \[$PS1_USER_COLOUR\]\u\[$txtwht\]@\[$bldcyn\]\h:\[$bldpur\]\$(git branch 2>/dev/null | grep '^*' | sed 's/^*//') \[$bldgrn\]\w \[$PS1_COLOUR\]> \[$txtrst\]"
 
 #if type kube_ps1 &>/dev/null; then
 #    PS1='$(kube_ps1)'" $PS1"
@@ -94,7 +96,7 @@ debug_bash_profile(){
     PS4='+ $BASH_SOURCE:$LINENO:' bash -xlic '' 2>&1 | less
 }
 
-if isMac; then
+if is_mac; then
     # turn this off on mac thing - it heavily pollutes $DEBUG output and does nothing because we have a custom prompt
     if [[ "${PROMPT_COMMAND:-}" =~ update_terminal_cwd ]]; then
         # this unsets direnv's hook

@@ -5,13 +5,13 @@
 #  Author: Hari Sekhon
 #  Date: 2012-06-25 15:20:39 +0100
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -30,8 +30,10 @@ colors(){
                '1;32m' '  33m' '1;33m' '  34m' '1;34m' '  35m' '1;35m' \
                '  36m' '1;36m' '  37m' '1;37m'; do
         FG=${FGs// /}
+        # shellcheck disable=SC1117
         echo -en " $FGs \033[$FG  $text  "
         for BG in 40m 41m 42m 43m 44m 45m 46m 47m; do
+            # shellcheck disable=SC1117
             echo -en "$EINS \033[$FG\033[$BG  $text  \033[0m";
         done
         echo

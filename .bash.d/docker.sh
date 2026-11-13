@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: 2015-11-05 20:53:32 +0000
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -19,26 +19,35 @@
 
 bash_tools="${bash_tools:-$(dirname "${BASH_SOURCE[0]}")/..}"
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 . "$bash_tools/.bash.d/os_detection.sh"
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 [ -f ~/.docker_vars ] && . ~/.docker_vars
 
-#if isLinux && type podman &>/dev/null; then
+#if is_linux && type -P podman &>/dev/null; then
 #    alias docker="podman"
 #fi
 
+export DOCKER_BUILDKIT=1
+
+# for new M1 Macs which otherwise fail to build with errors like this:
+#
+#   AWS CLI version: qemu-x86_64: Could not open '/lib64/ld-linux-x86-64.so.2': No such file or directory
+#
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
+
+alias dh=hub-tool
 alias dc=docker-compose
 alias dps='docker ps'
 alias dpsa='docker ps -a'
 alias dst="dockerhub_show_tags.py"
 # -l shows latest container, -q shows only ID
-alias dl='docker ps -lq'
+#alias dl='docker ps -lq'
 alias dockerimg='$EDITOR "$bash_tools/setup/docker-images.txt"'
 
 # wipe out exited containers
-alias dockerrm='docker rm $(docker ps -qf status=exited)'
+alias dockerrm='docker rm -- $(docker ps -qf status=exited)'
 
 alias dockerr=dockerrunrm
 alias dock=dockerr
@@ -129,8 +138,8 @@ function dockerrunrm(){
     #    echo "warning: using alpine:2.* with args but alpine:2.* doesn't have a default CMD so adding 'sh' arg" >&2
     #    args="$args sh"
     #fi
-    # want arg splitting
-    docker run --rm -ti -v "$PWD":/pwd -w /pwd "${args[@]}"
+    local basedir="${PWD##*/}"
+    docker run --rm -ti -v "$PWD":"/$basedir" -w "/$basedir" "${args[@]}"
 }
 alias drun='docker run --rm -ti -v "${PWD}":/app'
 
@@ -155,17 +164,16 @@ dockerrmall(){
     local ids=()
     read -r -a ids <<< "$(docker_get_container_ids)"
     if [ ${#ids} -gt 0 ]; then
-        docker rm -f "${ids[@]}"
+        docker rm -f -- "${ids[@]}"
     fi
 }
 
 dockerrmigrep(){
     for x in "$@"; do
         docker images |
-        grep "$x" |
-        grep -v "<none>" |
-        awk '{print $1":"$2}' |
-        xargs -r docker rmi
+        awk "/$x/{print \$1\":\"\$2}" |
+        sed '/<none>/d' |
+        xargs -r docker rmi --
     done
 }
 
@@ -174,7 +182,7 @@ dockerrmgrep(){
         docker ps -a |
         grep "$x" |
         awk '{print $NF}' |
-        xargs -r docker rm -f
+        xargs -r docker rm -f --
     done
 }
 

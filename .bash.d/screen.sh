@@ -4,18 +4,21 @@
 #  Author: Hari Sekhon
 #  Date: circa 2006 - 2012 (forked from .bashrc)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
 #                                  S c r e e n
 # ============================================================================ #
+
+# quickly open new screen terminal in the same $PWD
+alias scbash="screen bash"
 
 sc(){
     checkprog screen || return 1
@@ -71,7 +74,7 @@ screenbuf(){
     tmp="$(mktemp /tmp/screen-exchange.XXXXXX)"
     cat > "$tmp"
     screen -X readbuf "$tmp"
-    rm "$tmp";
+    rm -- "$tmp";
 }
 alias sb=screenbuf
 

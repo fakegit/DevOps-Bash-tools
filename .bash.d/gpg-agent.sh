@@ -5,13 +5,13 @@
 #  Author: Hari Sekhon
 #  Date: circa 2006 (forked from .bashrc)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -27,7 +27,7 @@ gpg_agent(){
             # looks like gpg-agent not longer outputs the pid to stdout to capture
             #GPG_ENV_FILE=~/.gpg-agent.env
             #if [ -f "$GPG_ENV_FILE" ]; then
-                # shellcheck disable=SC1090
+                # shellcheck disable=SC1090,SC1091
                 #. "$GPG_ENV_FILE" > /dev/null
 
                 #GPG_AGENT_PID="${GPG_AGENT_INFO#*:}"

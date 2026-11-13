@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: 2020-08-23 23:30:31 +0100 (Sun, 23 Aug 2020)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 #  Used on Alpine so needs to be /bin/sh
@@ -24,7 +24,9 @@ fi
 
 # used in client code
 # shellcheck disable=SC2034
-package_args_description="Takes a list of packages as arguments or via stdin, and for any arguments that are plaintext files, reads the packages from those given files (one package per line)"
+package_args_description="Takes a list of packages as arguments or via stdin,
+and for any arguments that are plaintext files,
+reads the packages from those given files (one package per line)"
 
 packages=""
 

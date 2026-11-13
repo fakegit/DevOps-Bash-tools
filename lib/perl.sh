@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: 2015-05-25 01:38:24 +0100 (Mon, 25 May 2015)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help improve or steer this or other code I publish
 #
-#  http://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 set -eu
@@ -59,6 +59,7 @@ if [ -n "${PERLBREW_PERL:-}" ]; then
 
     PERL_VERSION="${PERLBREW_PERL}"
     export PERL_VERSION="${PERLBREW_PERL/perl-/}"
+    sudo=""
 
     # For Travis CI which installs modules locally
 #    export PERL5LIB=$(echo \
@@ -72,7 +73,6 @@ if [ -n "${PERLBREW_PERL:-}" ]; then
 #        | tr '\n' ':'
 #    )
 
-    #sudo=""
     # gets this error when not specifying full perl path:
         # Can't load '/home/travis/perl5/perlbrew/perls/5.16/lib/5.16.3/x86_64-linux/auto/re/re.so' for module re: /home/travis/perl5/perlbrew/perls/5.16/lib/5.16.3/x86_64-linux/auto/re/re.so: undefined symbol: PL_valid_types_IVX at /home/travis/perl5/perlbrew/perls/5.16/lib/5.16.3/XSLoader.pm line 68.
         # at /home/travis/perl5/perlbrew/perls/5.16/lib/5.16.3/x86_64-linux/re.pm line 85.
@@ -88,7 +88,6 @@ if [ -n "${PERLBREW_PERL:-}" ]; then
     PERL_MAJOR_VERSION="$($perl -v | $perl -ne '/This is perl (\d+), version (\d+),/ && print "$1.$2"')"
 else
     PERL_VERSION="$(perl --version | grep -Eom 1 'v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+' | sed 's/^v//')"
-    sudo=""
     # don't want dollars to expand
     # shellcheck disable=SC2016
     PERL_MAJOR_VERSION="$($perl -v | $perl -ne '/This is perl (\d+), version (\d+),/ && print "$1.$2"')"

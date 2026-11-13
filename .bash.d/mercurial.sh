@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: circa 2012 (forked from .bashrc)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -75,29 +75,29 @@ hgci(){
     [ -z "$hgcimsg" ] && return 1
     hgcimsg="${hgcimsg%, }"
     hgcimsg="added $hgcimsg"
-    hg add "$@" &&
+    hg add -- "$@" &&
     echo "committing $*"
-    hg ci -m "$hgcimsg" "$@"
+    hg ci -m "$hgcimsg" -- "$@"
 }
 
 hgrm(){
-    hg rm "$@" &&
-    hg  ci -m "removed $*" "$@"
+    hg rm -- "$@" &&
+    hg ci -m "removed $*" -- "$@"
 }
 
 hgrevertrm(){
     hg revert "$@"
-    rm -v "$@"
+    rm -v -- "$@"
 }
 
 hgrename(){
-    hg mv "$1" "$2" &&
-    hg  ci -m "renamed $1 to $2" "$1" "$2"
+    hg mv -- "$1" "$2" &&
+    hg ci -m "renamed $1 to $2" -- "$1" "$2"
 }
 
 hgmv(){
-    hg  mv "$1" "$2" &&
-    hg  ci -m "moved $1 to $2" "$1" "$2"
+    hg mv -- "$1" "$2" &&
+    hg ci -m "moved $1 to $2" -- "$1" "$2"
 }
 
 hgl(){
@@ -106,11 +106,11 @@ hgl(){
 
 hgu(){
     [ -n "$1" ] || { echo "ERROR: must supply arg"; return 1; }
-    [ "$(hg  diff "$@" | wc -l)" -gt 0 ] || return
-    hg diff "$@" | more &&
+    [ "$(hg diff "$@" | wc -l)" -gt 0 ] || return
+    hg diff -- "$@" | more &&
     read -r &&
     echo "committing $*" &&
-    hg ci -m "updated $*" "$@"
+    hg ci -m "updated $*" -- "$@"
 }
 
 #hhgu(){
@@ -136,8 +136,8 @@ hgu(){
 #        { hg mydiff "$target"
 #          hg mydiff "spotify/$target"
 #        })"
-#        local removals="$(grep "^-[^-]" <<< "$diffs" | wc -l)"
-#        local additions="$(grep "^+[^+]" <<< "$diffs" | wc -l)"
+#        local removals="$(grep -c "^-[^-]" <<< "$diffs")"
+#        local additions="$(grep -c "^+[^+]" <<< "$diffs")"
 #        diffs="$(echo "$diffs" |
 #        egrep "^[+-]" |
 #        spotify/normalize_tracknames.pl |
@@ -190,6 +190,6 @@ hgunshelve(){
 hgdiff(){
     local filename="${1:-}"
     [ -n "$filename" ] || { echo "usage: hgdiff filename"; return 1; }
-    hg diff "$filename" > "/tmp/hgdiff.tmp"
+    hg diff -- "$filename" > "/tmp/hgdiff.tmp"
     diffnet.pl "/tmp/hgdiff.tmp"
 }

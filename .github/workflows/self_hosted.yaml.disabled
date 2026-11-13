@@ -4,11 +4,11 @@
 #
 #  vim:ts=2:sts=2:sw=2:et
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 name: Self Hosted
@@ -20,29 +20,34 @@ on: # [push]
   push:
     branches:
       - master
+    paths-ignore:
+      - *.md
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron:  '0 7 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   build:
     #name: build
-    timeout-minutes: 20
+    timeout-minutes: 60
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v1
+    - uses: actions/cache@v4
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-bash-tools  # ${{ hashFiles('**/requirements.txt') }}
+        key: pip-${{ runner.os }}-${{ runner.arch }}  # -${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-pip-bash-tools
-    - uses: actions/cache@v1
+          pip-${{ runner.os }}-${{ runner.arch }}
+    - uses: actions/cache@v4
       with:
         path: ~/.cpanm
-        key: ${{ runner.os }}-cpanm-bash-tools-${{ hashFiles('**/cpan-requirements.txt') }}
+        key: cpanm-${{ runner.os }}-${{ runner.arch }}  # -${{ hashFiles('**/cpan-requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-cpanm-bash-tools
+          cpanm-${{ runner.os }}-${{ runner.arch }}
     - name: init
       run: make init
     - name: build

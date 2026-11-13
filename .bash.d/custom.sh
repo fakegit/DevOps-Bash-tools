@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: 2006-06-28 23:25:09 +0100 (Wed, 28 Jun 2006)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -33,9 +33,10 @@ export SEMAPHORE_CI_ORGANIZATION=harisekhon
 
 alias tll="travis_last_log.py"
 
-alias goto=go-tools
+# can't set this to just the shorter 'go' or 'perl' because it'll clash with the actual commands
+alias goto=go_tools
 alias pyt=pytools
-alias to=perl-tools
+alias to=perl_tools
 
 # shellcheck disable=SC2154
 export plugins="$github/nagios-plugins"
@@ -56,5 +57,6 @@ alias pyll="tll /pylib"
 alias tol="tll /tools"
 alias to2="tool2"
 
-alias d2="Dockerfiles2"
+# clashes with the D2 diagramming language
+#alias d2="Dockerfiles2"
 alias Dockerfilesl="tll /Dockerfiles"

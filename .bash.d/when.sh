@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: circa 2006 - 2012 (forked from .bashrc)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -21,7 +21,7 @@
 when(){
     # should be in the format HH:MM:SS
     local time="$1"
-    shift
+    shift || :
     if ! grep -Eq "^[012]?[0-9]:[0-5]?[0-9]:[0-5]?[0-9]$" <<< "$time"; then
         echo "invalid time format - must be in format HH:MM:SS"
         return 1
@@ -37,7 +37,7 @@ when(){
 
 whenup(){
     local host="$1"
-    shift
+    shift || :
     checkhost "$host" || return 1
     local count=0
     # defined in network.sh
@@ -58,7 +58,7 @@ whenup(){
 # HTTP(s) version of whenup because corporate firewalls block ping
 whenurl(){
     local url="$1"
-    shift
+    shift || :
     local count=0
     while ! curl -s --connect-timeout 2 "$url" &>/dev/null; do
         ((count+=1))
@@ -75,7 +75,7 @@ whenurl(){
 
 whendown(){
     local host="$1"
-    shift
+    shift || :
     checkhost "$host" || return 1
     local count=0
     while ping -c 1 "$pingwait" 1 "$host" &>/dev/null; do
@@ -94,7 +94,8 @@ whendown(){
 whenport(){
     local host="$1"
     local port="$2"
-    shift; shift
+    shift || :
+    shift || :
     checkhost "$host" || return 1
     local count=0
     timestamp "checking port $port open..."
@@ -114,7 +115,7 @@ whenport(){
 
 whendone(){
     local search="$1"
-    shift
+    shift || :
     if [ -z "$search" ]; then
         echo "usage: when <search_for_prog_disappearing> <cmd>"
         return 1

@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: 2020-04-03 13:14:22 +0100 (Fri, 03 Apr 2020)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 set -euo pipefail
@@ -50,13 +50,15 @@ if [ -n "${PYTHON:-}" ]; then
     python="$PYTHON"
 else
     #python="$(command -v "$python" || command -v "python3" || command -v "python2" || :)"
-    python="$(command -v python 2>/dev/null || :)"
-    python2="$(command -v python2 2>/dev/null || :)"
-    python3="$(command -v python3 2>/dev/null || :)"
+    # XXX: bug, on new M1 Macs command -v appears to return 'python' where it is not installed, possibly inherited, whereas we need it to fail to fall through to python3
+    #python="$(command -v python 2>/dev/null || :)"
+    python="$(type -P python 2>/dev/null || :)"
+    python2="$(type -P python2 2>/dev/null || :)"
+    python3="$(type -P python3 2>/dev/null || :)"
     if [ -z "$python" ]; then
-        if [ -n "$python3" ]; then
+        if [ -n "${python3:-}" ]; then
             python="$python3"
-        elif [ -n "$python2" ]; then
+        elif [ -n "${python2:-}" ]; then
             python="$python2"
         else
             echo "ERROR: 'command -v python' failed to find python" >&2
@@ -74,7 +76,7 @@ else
     if [ -z "$pip" ]; then
         if [ -n "$pip3" ]; then
             pip="$pip3"
-        elif [ -n "$pip2" ]; then
+        elif [ -n "${pip2:-}" ]; then
             pip="$pip2"
         else
             echo "pip not found, falling back to trying just 'pip'" >&2
@@ -96,7 +98,7 @@ install_pip_manually(){
         curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     fi
     "$python" get-pip.py
-    rm get-pip.py
+    rm -f -- get-pip.py
 }
 
 # Needed on Semaphore Mac builds and also Ubuntu 20.04 LTS
@@ -152,11 +154,11 @@ check_python_pip_versions_match(){
        [ -n "${pip_python_version:-}" ]; then
         if [ "$python_version" != "$pip_python_version" ]; then
             if [ "${python_version:0:1}" = 3 ] &&
-               [ -n "$pip3" ]; then
+               [ -n "${pip3:-}" ]; then
                 pip="$pip3"
                 check_python_pip_versions_match
             elif [ "${python_version:0:1}" = 2 ]; then
-                if [ -n "$pip2" ]; then
+                if [ -n "${pip2:-}" ]; then
                     pip="$pip2"
                 else
                     # python2-pip removed from Ubuntu / Alpine repos :-(
@@ -166,7 +168,7 @@ check_python_pip_versions_match(){
                 check_python_pip_versions_match
             # switching to python3 will lead programs with /usr/env/python defaulting to python 2 to fail to find pip modules
             #elif [ "${python_version:0:1}" = 2 ] &&
-            #     [ -n "$python3" ]; then
+            #     [ -n "${python3:-}" ]; then
             #    python="$python3"
             #    check_python_pip_versions_match
             else
@@ -206,9 +208,9 @@ inside_virtualenv(){
         return 0
     # CircleCI uses /opt/circleci/.pyenv/shims/python
     # Codeship path when using virtualenv
-    elif command -v "$python" | grep -Eqi '/\.pyenv/|/shims/'; then
+    elif command -v "$python" | grep -Eqi '/\.pyenv/|/shims/|/home/'; then
         return 0
-    elif command -v "$pip" | grep -Eqi '/\.pyenv/|/shims/'; then
+    elif command -v "$pip" | grep -Eqi '/\.pyenv/|/shims/|/home/'; then
         return 0
     fi
     return 1

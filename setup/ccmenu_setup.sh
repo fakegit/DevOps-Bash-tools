@@ -4,18 +4,18 @@
 #  Author: Hari Sekhon
 #  Date: 2019-10-16 01:19:58 +0100 (Wed, 16 Oct 2019)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 set -euo pipefail
 [ -n "${DEBUG:-}" ] && set -x
-srcdir="$(dirname "$0")"
+srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 bin=/Applications/CCMenu.app/Contents/MacOS/CCMenu
 
@@ -23,7 +23,7 @@ plist_dir="Library/Containers/net.sourceforge.cruisecontrol.CCMenu/Data/Library/
 
 plist_file="net.sourceforge.cruisecontrol.CCMenu.plist"
 
-"$srcdir/install_homebrew.sh"
+"$srcdir/../install/install_homebrew.sh"
 echo
 
 if ! [ -f "$bin" ]; then

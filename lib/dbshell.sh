@@ -5,13 +5,13 @@
 #  Author: Hari Sekhon
 #  Date: 2020-08-05 13:42:41 +0100 (Wed, 05 Aug 2020)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # Utility library for the postgres / mysql / mariadb scripts at top level
@@ -134,7 +134,7 @@ docker_rm_when_last_connection(){
     #if [ "$(pgrep -lf "bash.*${0##*/}" | grep -c .)" -lt 2 ]; then
     #if [ "$(ps -ef | grep -c "[b]ash.*${0##*/}")" -lt 2 ]; then
         timestamp "last session closing, deleting container:"
-        docker rm -f "$container_name"
+        docker rm -f -- "$container_name"
     fi
 }
 

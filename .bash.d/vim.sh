@@ -5,13 +5,13 @@
 #  Author: Hari Sekhon
 #  Date: circa 2006 (forked from .bashrc and later functions.sh)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -20,7 +20,7 @@
 
 bash_tools="${bash_tools:-$(dirname "${BASH_SOURCE[0]}")/..}"
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 . "$bash_tools/.bash.d/os_detection.sh"
 
 # vim() function is in title.sh as it is tightly integrated with the functions in there and not necessary otherwise
@@ -44,6 +44,10 @@ vimfiletypes(){
 }
 
 gitgrepvim(){
+    if [ $# -lt 2 ]; then
+        echo "usage: gitgrepvim <pattern>"
+        return 3
+    fi
     # want splitting
     # shellcheck disable=SC2046
     vim $(git grep -i "$*" | sed 's/:.*//' | sort -u)
@@ -51,12 +55,36 @@ gitgrepvim(){
 alias ggrepv=gitgrepvim
 
 grepvim(){
+    if [ $# -lt 2 ]; then
+        echo "usage: grepvim <pattern> <files>"
+        return 3
+    fi
     # want splitting
     # shellcheck disable=SC2046
-    vim $(grep -li "$1" "$@" | sort -u)
+    vim $(grep -l "$1" "$@" | sort -u)
 }
 alias grepv=grepvim
 alias vimgrep=grepvim
+
+vimchanged(){
+    local git_root
+    git_root="$(git_root)"
+    # want splitting
+    # shellcheck disable=SC2046
+    vim "$@" $(git status --porcelain | awk '/^.M/ {$1=""; print}' | sed "s|^[[:space:]]|$git_root/|")
+}
+
+filesvim(){
+    local files=()
+    # mapfile not available on Mac and read -a only takes first result
+    # shellcheck disable=SC2207
+    IFS=$'\n' files=($(find . -iname "$@" | sort -u))
+    if [ -n "${files[*]}" ]; then
+        vim "${files[@]}"
+    fi
+}
+alias fvim=filesvim
+alias vimf=fvim
 
 # vim which
 vw(){
@@ -77,4 +105,11 @@ vihosts(){
     [ $EUID -eq 0 ] && sudo="" || sudo=sudo
     $sudo vim /etc/hosts
     $sudo pkill -1 dnsmasq
+}
+
+vimup(){
+    local arg="$1"
+    up_target="$(findup "$arg")"
+    [ -n "$up_target" ] || return 1
+    vim "$(findup "$1")"
 }

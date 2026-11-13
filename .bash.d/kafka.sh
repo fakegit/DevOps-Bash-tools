@@ -4,13 +4,13 @@
 #  Author: Hari Sekhon
 #  Date: 2019-07-28 14:46:37 +0100 (Sun, 28 Jul 2019)
 #
-#  https://github.com/harisekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # ============================================================================ #
@@ -19,8 +19,8 @@
 
 srcdir="${srcdir:-$(dirname "${BASH_SOURCE[0]}")/..}"
 
-# shellcheck disable=SC1090
-type add_PATH &>/dev/null || . "$srcdir/.bash.d/paths.sh"
+# shellcheck disable=SC1090,SC1091
+#type add_PATH &>/dev/null || . "$srcdir/.bash.d/paths.sh"
 
 for directory in \
     /usr/hdp/current/kafka-broker \

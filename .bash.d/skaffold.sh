@@ -4,7 +4,7 @@
 #  Author: Hari Sekhon
 #  Date: 2021-07-05 16:31:14 +0100 (Mon, 05 Jul 2021)
 #
-#  https://github.com/HariSekhon/bash-tools
+#  https://github.com/HariSekhon/DevOps-Bash-tools
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
@@ -22,4 +22,4 @@
 # shellcheck disable=SC1090,SC1091
 #type add_PATH &>/dev/null || . "$bash_tools/.bash.d/paths.sh"
 
-autocomplete skaffold
+#autocomplete skaffold
